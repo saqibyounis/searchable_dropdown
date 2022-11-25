@@ -92,6 +92,11 @@ class DropdownSearch<T> extends StatefulWidget {
   ///function that returns item from API
   final DropdownSearchOnFind<T>? asyncItems;
 
+  ///bool to indicate whether pagination is required or not
+  ///pagination boolean just calls again the asyncItems method
+  ///heavy lifting related to pagination like page number or page size and old items should be taken care by dev
+  final bool isPaginatedAsyncFilter;
+
   ///called when a new item is selected
   final ValueChanged<T?>? onChanged;
 
@@ -171,6 +176,7 @@ class DropdownSearch<T> extends StatefulWidget {
     this.items = const [],
     this.selectedItem,
     this.asyncItems,
+    this.isPaginatedAsyncFilter = false,
     this.dropdownBuilder,
     this.dropdownDecoratorProps = const DropDownDecoratorProps(),
     this.clearButtonProps = const ClearButtonProps(),
@@ -201,6 +207,7 @@ class DropdownSearch<T> extends StatefulWidget {
     this.autoValidateMode = AutovalidateMode.disabled,
     this.items = const [],
     this.asyncItems,
+    this.isPaginatedAsyncFilter = false,
     this.dropdownDecoratorProps = const DropDownDecoratorProps(),
     this.clearButtonProps = const ClearButtonProps(),
     this.dropdownButtonProps = const DropdownButtonProps(),
@@ -657,6 +664,7 @@ class DropdownSearchState<T> extends State<DropdownSearch<T>> {
       filterFn: widget.filterFn,
       items: widget.items,
       asyncItems: widget.asyncItems,
+      isPaginatedAsyncFilter: widget.isPaginatedAsyncFilter,
       onChanged: _handleOnChangeSelectedItems,
       compareFn: widget.compareFn,
       isMultiSelectionMode: isMultiSelectionMode,

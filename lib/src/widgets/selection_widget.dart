@@ -17,6 +17,7 @@ class SelectionWidget<T> extends StatefulWidget {
   final List<T> defaultSelectedItems;
   final PopupPropsMultiSelection<T> popupProps;
   final bool isMultiSelectionMode;
+  final bool isPaginatedAsyncFilter;
 
   const SelectionWidget({
     Key? key,
@@ -29,6 +30,7 @@ class SelectionWidget<T> extends StatefulWidget {
     this.itemAsString,
     this.filterFn,
     this.compareFn,
+    this.isPaginatedAsyncFilter = false,
   }) : super(key: key);
 
   @override
@@ -69,6 +71,31 @@ class SelectionWidgetState<T> extends State<SelectionWidget<T>> {
         isFirstLoad: true,
       ),
     );
+
+    if (widget.isPaginatedAsyncFilter) {
+      if (widget.popupProps.listViewProps.controller != null) {
+        widget.popupProps.listViewProps.controller?.addListener(() async {
+          if (widget.popupProps.listViewProps.controller?.position.pixels ==
+              widget.popupProps.listViewProps.controller?.position
+                  .maxScrollExtent) {
+            _manageItemsByFilter(
+              searchBoxController.text,
+              isFirstLoad: false,
+            );
+          }
+        });
+      } else {
+        scrollController.addListener(() async {
+          if (scrollController.position.pixels ==
+              scrollController.position.maxScrollExtent) {
+            _manageItemsByFilter(
+              searchBoxController.text,
+              isFirstLoad: false,
+            );
+          }
+        });
+      }
+    }
   }
 
   @override
