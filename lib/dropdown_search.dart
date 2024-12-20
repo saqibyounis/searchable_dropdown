@@ -364,7 +364,7 @@ class DropdownSearchState<T> extends State<DropdownSearch<T>> {
         );
       }
       return Text(_selectedItemAsString(getSelectedItem),
-          style: Theme.of(context).textTheme.subtitle1);
+          style: Theme.of(context).textTheme.titleMedium);
     }
 
     return selectedItemWidget();
